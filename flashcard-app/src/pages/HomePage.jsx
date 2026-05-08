@@ -3,17 +3,17 @@ import './HomePage.css';
 
 const features = [
   {
-    icon: '📄',
+    icon: '',
     title: 'Paste any text',
     desc: 'Articles, notes, textbooks — any study material works.',
   },
   {
-    icon: '✨',
+    icon: '',
     title: 'AI generation',
     desc: 'Smart questions and answers crafted from your content.',
   },
   {
-    icon: '🎯',
+    icon: '',
     title: 'Learn & master',
     desc: 'Track your progress with spaced repetition built in.',
   },

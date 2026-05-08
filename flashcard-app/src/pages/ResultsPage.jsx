@@ -2,10 +2,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './ResultsPage.css';
 
 function getPerformance(pct) {
-  if (pct >= 80) return { label: 'Excellent!', color: '#6affc8', emoji: '🏆' };
-  if (pct >= 60) return { label: 'Good job!', color: '#ffd56a', emoji: '⭐' };
-  if (pct >= 40) return { label: 'Keep going!', color: '#a16aff', emoji: '💪' };
-  return { label: 'Keep practicing', color: '#ff6ec7', emoji: '📚' };
+  if (pct >= 80) return { label: 'Excellent!', color: '#6affc8', emoji: '' };
+  if (pct >= 60) return { label: 'Good job!', color: '#ffd56a', emoji: '' };
+  if (pct >= 40) return { label: 'Keep going!', color: '#a16aff', emoji: '' };
+  return { label: 'Keep practicing', color: '#ff6ec7', emoji: '' };
 }
 
 function ResultsPage() {
