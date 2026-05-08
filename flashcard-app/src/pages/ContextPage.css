@@ -1,0 +1,420 @@
+/* ============================================================
+   ContextPage — flashcard generation form
+   Dark theme with iridescent gradient accents.
+   ============================================================ */
+
+.context-page {
+  min-height: 100vh;
+  background: #0a0a0f;
+  color: #e8e8f0;
+  padding: 2.5rem 1.5rem 4rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Back link ──────────────────────────────────────────── */
+
+.back-link {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: #7878a0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem 0.25rem 0;
+  margin-bottom: 1.5rem;
+  font-family: inherit;
+  transition: color 0.2s;
+  border-radius: 4px;
+}
+
+.back-link:hover {
+  color: #e8e8f0;
+}
+
+.back-link:focus-visible {
+  outline: 2px solid #a16aff;
+  outline-offset: 4px;
+}
+
+/* ── Page heading ───────────────────────────────────────── */
+
+.context-page h1 {
+  /* clamp() keeps the title readable at all viewport widths */
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  margin-bottom: 2rem;
+  /* Iridescent shimmer gradient across the text */
+  background: linear-gradient(
+    90deg,
+    #ff6ec7 0%,
+    #a16aff 25%,
+    #6ac5ff 50%,
+    #6affc8 75%,
+    #ffd56a 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+  /* Small padding prevents the gradient clip from cutting off descenders */
+  padding: 0.1em 0.05em;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 0%   center; }
+  100% { background-position: 200% center; }
+}
+
+/* Respect the user's motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .context-page h1 {
+    animation: none;
+    background-position: 0% center;
+  }
+}
+
+/* ── Form card ──────────────────────────────────────────── */
+
+.form-card {
+  width: 100%;
+  max-width: 600px;
+  background: #14141c;
+  border: 1px solid #2a2a3a;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  position: relative;
+  /* Reset <form> element defaults */
+  display: block;
+  margin: 0;
+}
+
+/*
+  Iridescent gradient border ring — uses the mask technique so the
+  gradient only shows in the 2px border zone, not the card interior.
+*/
+.form-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px; /* 16px card + 2px inset = flush outer corners */
+  padding: 2px;
+  background: linear-gradient(135deg, #ff6ec7, #a16aff, #6ac5ff, #6affc8);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ── Form groups ────────────────────────────────────────── */
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #9090b0;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+/* Two-column grid for the numCards + difficulty controls */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  /* No bottom margin — form-actions provides its own top spacing */
+}
+
+/* ── Form inputs ────────────────────────────────────────── */
+
+textarea,
+input[type='number'],
+select {
+  width: 100%;
+  background: #0a0a0f;
+  border: 1px solid #2a2a3a;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #e8e8f0;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  /* Normalize cross-browser appearance on dark backgrounds */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Re-add a custom dropdown arrow since we removed the native one */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237878a0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+textarea {
+  min-height: 180px;
+  resize: vertical;
+  line-height: 1.65;
+}
+
+/*
+  :focus-visible shows the focus ring only for keyboard navigation,
+  not for mouse clicks — cleaner UX without sacrificing accessibility.
+*/
+textarea:focus-visible,
+input[type='number']:focus-visible,
+select:focus-visible {
+  outline: none;
+  border-color: #a16aff;
+  box-shadow: 0 0 0 3px rgba(161, 106, 255, 0.2);
+}
+
+/* Fallback for browsers that don't support :focus-visible */
+textarea:focus:not(:focus-visible),
+input[type='number']:focus:not(:focus-visible),
+select:focus:not(:focus-visible) {
+  outline: none;
+  border-color: #a16aff;
+  box-shadow: 0 0 0 3px rgba(161, 106, 255, 0.2);
+}
+
+/* Visual cue when aria-invalid is set by validation */
+textarea[aria-invalid='true'] {
+  border-color: rgba(255, 110, 199, 0.6);
+}
+
+/* ── Word / character count ─────────────────────────────── */
+
+/*
+  Hidden by default. Fades in (.visible) once the user starts typing.
+  aria-hidden on the element prevents noisy screen-reader announcements.
+*/
+.text-meta {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  color: #4a4a6a;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  user-select: none;
+  line-height: 1;
+}
+
+.text-meta.visible {
+  opacity: 1;
+}
+
+/* ── Validation error ───────────────────────────────────── */
+
+.form-error {
+  margin: 0.5rem 0 0;
+  font-size: 0.825rem;
+  color: #ff6ec7;
+  padding-left: 0.125rem;
+}
+
+/* ── Action group ───────────────────────────────────────── */
+
+.form-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Row holding the two secondary actions */
+.form-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── Primary button — Generate Flashcards ───────────────── */
+
+.generate-btn {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0a0a0f;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  /* Gradient shifts right on hover for a sweep effect */
+  background: linear-gradient(90deg, #ff6ec7, #a16aff, #6ac5ff, #6affc8);
+  background-size: 200% auto;
+  transition: background-position 0.5s, transform 0.12s, box-shadow 0.25s;
+  letter-spacing: 0.03em;
+  /* Always flex so the spinner + label align correctly */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.generate-btn:hover:not(:disabled) {
+  background-position: 100% center;
+  box-shadow: 0 6px 28px rgba(161, 106, 255, 0.35);
+}
+
+.generate-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.generate-btn:focus-visible {
+  outline: 2px solid #e8e8f0;
+  outline-offset: 3px;
+}
+
+.generate-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* ── Loading spinner (inside generate-btn) ──────────────── */
+
+.spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(10, 10, 15, 0.25);
+  border-top-color: #0a0a0f;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Secondary button — Skip for now ───────────────────── */
+
+/*
+  Ghost / outlined style: transparent background with a subtle border.
+  Visually quieter than the primary gradient button to reinforce hierarchy.
+*/
+.skip-btn {
+  padding: 0.65rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #9090b0;
+  background: transparent;
+  border: 1px solid #2a2a3a;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.skip-btn:hover:not(:disabled) {
+  border-color: #7878a0;
+  color: #e8e8f0;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.skip-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.skip-btn:focus-visible {
+  outline: 2px solid #a16aff;
+  outline-offset: 2px;
+}
+
+.skip-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Tertiary button — Generate hints ───────────────────── */
+
+/*
+  Link-style button with an animated underline on hover.
+  The purple accent color connects it to the app's gradient palette.
+*/
+.hints-btn {
+  padding: 0.65rem 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #a16aff;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.2s;
+  letter-spacing: 0.02em;
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Underline grows from left to right on hover */
+.hints-btn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.3rem;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.hints-btn:hover:not(:disabled) {
+  color: #c49aff;
+}
+
+.hints-btn:hover:not(:disabled)::after {
+  transform: scaleX(1);
+}
+
+.hints-btn:focus-visible {
+  outline: 2px solid #a16aff;
+  outline-offset: 4px;
+}
+
+.hints-btn:disabled {
+  color: #3a3a5a;
+  cursor: not-allowed;
+}
+
+/* ── Responsive — compact screens ───────────────────────── */
+
+@media (max-width: 520px) {
+  .context-page {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .form-card {
+    padding: 1.5rem 1.25rem;
+    border-radius: 14px;
+  }
+
+  /* Stack the two config controls vertically on narrow screens */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
