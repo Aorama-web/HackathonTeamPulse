@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Flashcard  | AI Terminal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="logo">AI Flashcard<span>Mind</span></h1>
+            <p class="tagline">Paste your raw notes. Let the AI architect your study session.</p>
+        </header>
+
+        <section class="glass-card full-width" id="input-terminal">
+            <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="terminal-title">Source_Material.txt</span>
+            </div>
+            <textarea id="note-input" placeholder="// Paste your notes, lectures, or transcripts here..."></textarea>
+            
+            <div class="action-bar">
+                <p id="char-count">0 characters</p>
+                <button class="btn-gradient" id="generate-btn">
+                    Generate Flashcards ✦
+                </button>
+            </div>
+
+            <div id="ai-loading" class="overlay hidden">
+                <div class="scan-line"></div>
+                <div class="loader"></div>
+                <p class="gradient-text">ARCHITECTING CARDS...</p>
+            </div>
+        </section>
+
+        <div class="bottom-grid">
+            <section class="glass-card flashcard-section">
+                <div id="flashcard-container">
+                    <div class="flashcard" id="card">
+                        <div class="card-inner">
+                            <div class="card-front" id="q-text">Waiting for source data...</div>
+                            <div class="card-back" id="a-text">The AI answer will render here.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="controls hidden" id="controls">
+                    <button class="btn-action fail" onclick="handleFeedback(false)">Needs Practice</button>
+                    <button class="btn-action pass" onclick="handleFeedback(true)">Mastered</button>
+                </div>
+            </section>
+
+            <aside class="glass-card stats-section">
+                <div class="stat-box"><label>Mastered</label><span id="count-mastered">0</span></div>
+                <div class="stat-box"><label>In Queue</label><span id="count-practice">0</span></div>
+            </aside>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
