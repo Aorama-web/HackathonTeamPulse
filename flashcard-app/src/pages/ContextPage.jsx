@@ -90,9 +90,9 @@ function ContextPage() {
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
             >
-              <option value="easy">Easy — fill in the blank</option>
-              <option value="medium">Medium — open questions</option>
-              <option value="hard">Hard — explain concepts</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
             </select>
           </div>
         </div>
